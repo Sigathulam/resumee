@@ -3,104 +3,243 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Advanced Resume Enhancer</title>
+  <title>Enhanced Professional Resume Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f7f6;
-      color: #333;
+      font-family: 'Roboto', sans-serif;
+      background-color: #f0f4f8;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
 
-    #resume-enhancer {
+    #resume-container {
+      width: 100%;
       max-width: 900px;
       margin: 20px auto;
-      padding: 20px;
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     }
 
     h1 {
+      font-family: 'Lora', serif;
       text-align: center;
-      color: #2a3d5f;
+      font-size: 36px;
+      color: #333;
+      margin-bottom: 20px;
     }
 
-    #resume-form {
+    .tabs {
+      display: flex;
+      justify-content: space-around;
       margin-bottom: 30px;
+      border-bottom: 2px solid #ddd;
+    }
+
+    .tab {
+      padding: 12px 20px;
+      cursor: pointer;
+      font-weight: 500;
+      color: #007BFF;
+      text-transform: uppercase;
+    }
+
+    .tab:hover {
+      background-color: #f1f1f1;
+      border-radius: 5px;
+    }
+
+    .tab.active {
+      border-bottom: 2px solid #007BFF;
+      color: #0056b3;
     }
 
     .form-field {
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
 
     label {
-      font-weight: bold;
+      display: block;
+      font-weight: 500;
+      color: #333;
+      margin-bottom: 8px;
     }
 
     input, textarea, select {
       width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
+      padding: 12px;
+      margin-top: 6px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border-color 0.3s;
     }
 
-    #resume-preview, #enhancement-suggestions {
-      margin-top: 30px;
-    }
-
-    #resume-preview {
-      padding: 15px;
-      background-color: #f8f8f8;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-    }
-
-    #enhancement-suggestions {
-      padding: 15px;
-      background-color: #f8f8f8;
-      border: 1px solid #ddd;
-      border-radius: 5px;
+    input:focus, textarea:focus, select:focus {
+      border-color: #007BFF;
+      outline: none;
     }
 
     button {
-      background-color: #4CAF50;
+      background-color: #007BFF;
       color: white;
-      padding: 10px 20px;
+      padding: 12px 30px;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
       cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
       display: block;
       margin: 20px auto;
     }
 
     button:hover {
-      background-color: #45a049;
+      background-color: #0056b3;
     }
 
-    #pdf-container {
-      margin-top: 20px;
-      height: 500px;
-      width: 100%;
+    #resume-preview {
       display: none;
+      padding: 30px;
+      background-color: #f9f9f9;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .resume-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .resume-header h2 {
+      font-family: 'Lora', serif;
+      font-size: 36px;
+      margin: 0;
+      color: #333;
+    }
+
+    .resume-header p {
+      margin: 6px 0;
+      font-size: 16px;
+      color: #666;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 10px;
+      margin-top: 20px;
+    }
+
+    .section-content {
+      margin-left: 20px;
+      font-size: 16px;
+      color: #555;
+    }
+
+    .section-content ul {
+      list-style-type: square;
+      margin-left: 20px;
+    }
+
+    .resume-footer {
+      text-align: center;
+      font-size: 16px;
+      margin-top: 30px;
+    }
+
+    .resume-footer a {
+      color: #007BFF;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    /* PDF Download Button */
+    #download-pdf {
+      background-color: #28a745;
+      color: white;
+      padding: 12px 30px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 18px;
+    }
+
+    #download-pdf:hover {
+      background-color: #218838;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      #resume-container {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      .tab {
+        font-size: 14px;
+      }
+
+      .form-field input,
+      .form-field textarea,
+      .form-field select {
+        font-size: 14px;
+      }
+
+      .resume-header h2 {
+        font-size: 28px;
+      }
+
+      .section-title {
+        font-size: 18px;
+      }
+
+      .section-content {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div id="resume-enhancer">
-    <h1>Advanced Resume Enhancer</h1>
+  <div id="resume-container">
+    <h1>Enhanced Professional Resume Generator</h1>
 
+    <div class="tabs">
+      <div class="tab active" id="form-tab">Resume Form</div>
+      <div class="tab" id="preview-tab">Preview</div>
+    </div>
+
+    <!-- Resume Form -->
     <div id="resume-form">
       <div class="form-field">
         <label for="name">Full Name:</label>
-        <input type="text" id="name" placeholder="Enter your name">
+        <input type="text" id="name" placeholder="Enter your full name">
+      </div>
+      <div class="form-field">
+        <label for="address">Address:</label>
+        <input type="text" id="address" placeholder="Enter your address">
+      </div>
+      <div class="form-field">
+        <label for="phone">Phone Number:</label>
+        <input type="text" id="phone" placeholder="Enter your phone number">
       </div>
       <div class="form-field">
         <label for="email">Email:</label>
         <input type="email" id="email" placeholder="Enter your email">
+      </div>
+      <div class="form-field">
+        <label for="linkedin">LinkedIn (Optional):</label>
+        <input type="text" id="linkedin" placeholder="Enter your LinkedIn profile">
+      </div>
+      <div class="form-field">
+        <label for="summary">Professional Summary:</label>
+        <textarea id="summary" placeholder="Write a brief summary about your career goals and achievements"></textarea>
       </div>
       <div class="form-field">
         <label for="experience">Work Experience (comma separated):</label>
@@ -115,6 +254,14 @@
         <textarea id="education" placeholder="Enter your education details"></textarea>
       </div>
       <div class="form-field">
+        <label for="certifications">Certifications & Awards (comma separated):</label>
+        <textarea id="certifications" placeholder="Enter your certifications"></textarea>
+      </div>
+      <div class="form-field">
+        <label for="projects">Projects (comma separated):</label>
+        <textarea id="projects" placeholder="Enter your projects"></textarea>
+      </div>
+      <div class="form-field">
         <label for="industry">Select Industry:</label>
         <select id="industry">
           <option value="software">Software</option>
@@ -123,150 +270,141 @@
           <option value="finance">Finance</option>
         </select>
       </div>
+
+      <button id="view-btn">View Enhanced Resume</button>
     </div>
 
+    <!-- Resume Preview -->
     <div id="resume-preview">
-      <h2>Resume Preview</h2>
-      <div id="preview"></div>
-    </div>
+      <div class="resume-header">
+        <h2 id="preview-name"></h2>
+        <p id="preview-email"></p>
+        <p id="preview-phone"></p>
+        <p id="preview-address"></p>
+        <p id="preview-linkedin"></p>
+      </div>
 
-    <div id="enhancement-suggestions">
-      <h3>Enhancement Suggestions</h3>
-      <div id="suggestions"></div>
-    </div>
+      <div class="section-title">Professional Summary</div>
+      <div id="preview-summary" class="section-content"></div>
 
-    <button id="generate-btn">Generate and View Enhanced Resume</button>
-    <button id="download-btn" style="display:none;">Download PDF</button>
+      <div class="section-title">Work Experience</div>
+      <div id="preview-experience" class="section-content"></div>
 
-    <div id="pdf-container">
-      <iframe id="pdf-frame" style="width:100%; height:100%;" frameborder="0"></iframe>
+      <div class="section-title">Education</div>
+      <div id="preview-education" class="section-content"></div>
+
+      <div class="section-title">Skills</div>
+      <div id="preview-skills" class="section-content"></div>
+
+      <div class="section-title">Certifications & Awards</div>
+      <div id="preview-certifications" class="section-content"></div>
+
+      <div class="section-title">Projects</div>
+      <div id="preview-projects" class="section-content"></div>
+
+      <div class="resume-footer">
+        <a href="#" id="download-pdf">Download PDF</a>
+      </div>
     </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const formContainer = document.getElementById('resume-form');
-      const previewContainer = document.getElementById('preview');
-      const suggestionsContainer = document.getElementById('suggestions');
-      const generateButton = document.getElementById('generate-btn');
-      const downloadButton = document.getElementById('download-btn');
-      const pdfContainer = document.getElementById('pdf-container');
-      const pdfFrame = document.getElementById('pdf-frame');
+      const formTab = document.getElementById('form-tab');
+      const previewTab = document.getElementById('preview-tab');
+      const resumeForm = document.getElementById('resume-form');
+      const resumePreview = document.getElementById('resume-preview');
+      const viewButton = document.getElementById('view-btn');
 
-      const resumeData = {
-        name: '',
-        email: '',
-        experience: '',
-        skills: '',
-        education: '',
-        industry: ''
-      };
+      const nameInput = document.getElementById('name');
+      const addressInput = document.getElementById('address');
+      const phoneInput = document.getElementById('phone');
+      const emailInput = document.getElementById('email');
+      const linkedinInput = document.getElementById('linkedin');
+      const summaryInput = document.getElementById('summary');
+      const experienceInput = document.getElementById('experience');
+      const skillsInput = document.getElementById('skills');
+      const educationInput = document.getElementById('education');
+      const certificationsInput = document.getElementById('certifications');
+      const projectsInput = document.getElementById('projects');
 
-      // Listen for changes in the input fields
-      formContainer.addEventListener('input', (e) => {
-        resumeData[e.target.id] = e.target.value;
-        updateResumePreview();
-        provideEnhancementSuggestions();
+      const previewName = document.getElementById('preview-name');
+      const previewEmail = document.getElementById('preview-email');
+      const previewPhone = document.getElementById('preview-phone');
+      const previewAddress = document.getElementById('preview-address');
+      const previewLinkedin = document.getElementById('preview-linkedin');
+      const previewSummary = document.getElementById('preview-summary');
+      const previewExperience = document.getElementById('preview-experience');
+      const previewSkills = document.getElementById('preview-skills');
+      const previewEducation = document.getElementById('preview-education');
+      const previewCertifications = document.getElementById('preview-certifications');
+      const previewProjects = document.getElementById('preview-projects');
+
+      const downloadPDFLink = document.getElementById('download-pdf');
+
+      // Show preview tab
+      viewButton.addEventListener('click', () => {
+        formTab.classList.remove('active');
+        previewTab.classList.add('active');
+        resumeForm.style.display = 'none';
+        resumePreview.style.display = 'block';
+
+        // Update preview content
+        previewName.textContent = nameInput.value;
+        previewEmail.textContent = emailInput.value;
+        previewPhone.textContent = phoneInput.value;
+        previewAddress.textContent = addressInput.value;
+        previewLinkedin.textContent = linkedinInput.value;
+
+        previewSummary.textContent = summaryInput.value;
+        previewExperience.innerHTML = experienceInput.value.split(',').join('<br>');
+        previewEducation.innerHTML = educationInput.value.split(',').join('<br>');
+        previewSkills.innerHTML = skillsInput.value.split(',').join('<br>');
+        previewCertifications.innerHTML = certificationsInput.value.split(',').join('<br>');
+        previewProjects.innerHTML = projectsInput.value.split(',').join('<br>');
       });
 
-      // Function to update the resume preview
-      const updateResumePreview = () => {
-        previewContainer.innerHTML = `
-          <h2>${resumeData.name}</h2>
-          <p>Email: ${resumeData.email}</p>
-          <h3>Work Experience</h3>
-          <p>${resumeData.experience.split(',').join('<br>') || 'N/A'}</p>
-          <h3>Education</h3>
-          <p>${resumeData.education.split(',').join('<br>') || 'N/A'}</p>
-          <h3>Skills</h3>
-          <p>${resumeData.skills.split(',').join('<br>') || 'N/A'}</p>
-        `;
-      };
-
-      // Function to provide enhancement suggestions
-      const provideEnhancementSuggestions = () => {
-        suggestionsContainer.innerHTML = '';
-
-        const industryKeywords = {
-          software: ['JavaScript', 'React', 'Node.js', 'Git', 'API'],
-          marketing: ['SEO', 'Google Analytics', 'Content Marketing', 'PPC', 'Social Media'],
-          healthcare: ['Patient Care', 'EMR', 'HIPAA Compliance', 'Clinical Research', 'Medical Records'],
-          finance: ['Financial Modeling', 'Excel', 'Investment Analysis', 'Portfolio Management', 'Risk Assessment']
-        };
-
-        const keywords = industryKeywords[resumeData.industry] || [];
-
-        const atsSuggestion = `
-          <strong>ATS Keyword Suggestions:</strong><br>
-          Add the following keywords for better ATS optimization: 
-          ${keywords.join(', ')}.
-        `;
-        const atsSuggestionElement = document.createElement('div');
-        atsSuggestionElement.innerHTML = atsSuggestion;
-        suggestionsContainer.appendChild(atsSuggestionElement);
-
-        const languageSuggestions = `
-          <strong>Language Improvement:</strong><br>
-          - Use action verbs like 'Led', 'Developed', 'Implemented'.<br>
-          - Quantify achievements with numbers and percentages when possible.<br>
-        `;
-        const languageSuggestionElement = document.createElement('div');
-        languageSuggestionElement.innerHTML = languageSuggestions;
-        suggestionsContainer.appendChild(languageSuggestionElement);
-      };
-
-      // Function to generate enhanced resume PDF and display it
-      const generateAndDisplayPDF = () => {
+      // Download PDF
+      downloadPDFLink.addEventListener('click', () => {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-
         doc.setFont('Arial', 'normal');
 
-        // Add Name and Email
-        doc.text(`Resume - ${resumeData.name}`, 10, 10);
-        doc.text(`Email: ${resumeData.email}`, 10, 20);
+        // Add name, address, and contact details
+        doc.text(`${nameInput.value}`, 10, 10);
+        doc.text(`${addressInput.value}`, 10, 20);
+        doc.text(`Phone: ${phoneInput.value}`, 10, 30);
+        doc.text(`Email: ${emailInput.value}`, 10, 40);
+        doc.text(`LinkedIn: ${linkedinInput.value}`, 10, 50);
 
-        // Add Work Experience Section
-        doc.text('Work Experience:', 10, 30);
-        doc.text(resumeData.experience.split(',').join('\n'), 10, 40);
+        // Add professional summary
+        doc.text('Professional Summary:', 10, 60);
+        doc.text(summaryInput.value, 10, 70);
 
-        // Add Education Section
-        doc.text('Education:', 10, 60);
-        doc.text(resumeData.education.split(',').join('\n'), 10, 70);
+        // Add work experience
+        doc.text('Work Experience:', 10, 90);
+        doc.text(experienceInput.value.split(',').join('\n'), 10, 100);
 
-        // Add Skills Section
-        doc.text('Skills:', 10, 90);
-        doc.text(resumeData.skills.split(',').join('\n'), 10, 100);
+        // Add education
+        doc.text('Education:', 10, 130);
+        doc.text(educationInput.value.split(',').join('\n'), 10, 140);
 
-        // Add ATS optimization keywords
-        const industryKeywords = {
-          software: ['JavaScript', 'React', 'Node.js', 'Git', 'API'],
-          marketing: ['SEO', 'Google Analytics', 'Content Marketing', 'PPC', 'Social Media'],
-          healthcare: ['Patient Care', 'EMR', 'HIPAA Compliance', 'Clinical Research', 'Medical Records'],
-          finance: ['Financial Modeling', 'Excel', 'Investment Analysis', 'Portfolio Management', 'Risk Assessment']
-        };
-        doc.text('Suggested ATS Keywords:', 10, 120);
-        doc.text(industryKeywords[resumeData.industry].join(', '), 10, 130);
+        // Add skills
+        doc.text('Skills:', 10, 170);
+        doc.text(skillsInput.value.split(',').join('\n'), 10, 180);
 
-        // Render PDF as base64 and show it in iframe
-        const pdfDataUrl = doc.output('datauristring');
-        pdfFrame.src = pdfDataUrl;
+        // Add certifications & awards
+        doc.text('Certifications & Awards:', 10, 210);
+        doc.text(certificationsInput.value.split(',').join('\n'), 10, 220);
 
-        // Show the PDF container
-        pdfContainer.style.display = 'block';
+        // Add projects
+        doc.text('Projects:', 10, 250);
+        doc.text(projectsInput.value.split(',').join('\n'), 10, 260);
 
-        // Enable the download button
-        downloadButton.style.display = 'inline-block';
-
-        // Set download URL for the file
-        downloadButton.setAttribute('href', pdfDataUrl);
-        downloadButton.setAttribute('download', `${resumeData.name}_enhanced_resume.pdf`);
-      };
-
-      // Event listener for the generate button
-      generateButton.addEventListener('click', generateAndDisplayPDF);
+        // Save PDF
+        doc.save(`${nameInput.value}_resume.pdf`);
+      });
     });
   </script>
 
