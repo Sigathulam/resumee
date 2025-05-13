@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Resume Enhancer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f7f6;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    #resume-enhancer {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #2a3d5f;
+    }
+
+    #resume-form {
+      margin-bottom: 30px;
+    }
+
+    .form-field {
+      margin-bottom: 15px;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    #resume-preview, #enhancement-suggestions {
+      margin-top: 30px;
+    }
+
+    #resume-preview {
+      padding: 15px;
+      background-color: #f8f8f8;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    #enhancement-suggestions {
+      padding: 15px;
+      background-color: #f8f8f8;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: block;
+      margin: 20px auto;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #pdf-container {
+      margin-top: 20px;
+      height: 500px;
+      width: 100%;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="resume-enhancer">
+    <h1>Advanced Resume Enhancer</h1>
+
+    <div id="resume-form">
+      <div class="form-field">
+        <label for="name">Full Name:</label>
+        <input type="text" id="name" placeholder="Enter your name">
+      </div>
+      <div class="form-field">
+        <label for="email">Email:</label>
+        <input type="email" id="email" placeholder="Enter your email">
+      </div>
+      <div class="form-field">
+        <label for="experience">Work Experience (comma separated):</label>
+        <textarea id="experience" placeholder="Enter your work experience"></textarea>
+      </div>
+      <div class="form-field">
+        <label for="skills">Skills (comma separated):</label>
+        <textarea id="skills" placeholder="Enter your skills"></textarea>
+      </div>
+      <div class="form-field">
+        <label for="education">Education (comma separated):</label>
+        <textarea id="education" placeholder="Enter your education details"></textarea>
+      </div>
+      <div class="form-field">
+        <label for="industry">Select Industry:</label>
+        <select id="industry">
+          <option value="software">Software</option>
+          <option value="marketing">Marketing</option>
+          <option value="healthcare">Healthcare</option>
+          <option value="finance">Finance</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="resume-preview">
+      <h2>Resume Preview</h2>
+      <div id="preview"></div>
+    </div>
+
+    <div id="enhancement-suggestions">
+      <h3>Enhancement Suggestions</h3>
+      <div id="suggestions"></div>
+    </div>
+
+    <button id="generate-btn">Generate and View Enhanced Resume</button>
+    <button id="download-btn" style="display:none;">Download PDF</button>
+
+    <div id="pdf-container">
+      <iframe id="pdf-frame" style="width:100%; height:100%;" frameborder="0"></iframe>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const formContainer = document.getElementById('resume-form');
+      const previewContainer = document.getElementById('preview');
+      const suggestionsContainer = document.getElementById('suggestions');
+      const generateButton = document.getElementById('generate-btn');
+      const downloadButton = document.getElementById('download-btn');
+      const pdfContainer = document.getElementById('pdf-container');
+      const pdfFrame = document.getElementById('pdf-frame');
+
+      const resumeData = {
+        name: '',
+        email: '',
+        experience: '',
+        skills: '',
+        education: '',
+        industry: ''
+      };
+
+      // Listen for changes in the input fields
+      formContainer.addEventListener('input', (e) => {
+        resumeData[e.target.id] = e.target.value;
+        updateResumePreview();
+        provideEnhancementSuggestions();
+      });
+
+      // Function to update the resume preview
+      const updateResumePreview = () => {
+        previewContainer.innerHTML = `
+          <h2>${resumeData.name}</h2>
+          <p>Email: ${resumeData.email}</p>
+          <h3>Work Experience</h3>
+          <p>${resumeData.experience.split(',').join('<br>') || 'N/A'}</p>
+          <h3>Education</h3>
+          <p>${resumeData.education.split(',').join('<br>') || 'N/A'}</p>
+          <h3>Skills</h3>
+          <p>${resumeData.skills.split(',').join('<br>') || 'N/A'}</p>
+        `;
+      };
+
+      // Function to provide enhancement suggestions
+      const provideEnhancementSuggestions = () => {
+        suggestionsContainer.innerHTML = '';
+
+        const industryKeywords = {
+          software: ['JavaScript', 'React', 'Node.js', 'Git', 'API'],
+          marketing: ['SEO', 'Google Analytics', 'Content Marketing', 'PPC', 'Social Media'],
+          healthcare: ['Patient Care', 'EMR', 'HIPAA Compliance', 'Clinical Research', 'Medical Records'],
+          finance: ['Financial Modeling', 'Excel', 'Investment Analysis', 'Portfolio Management', 'Risk Assessment']
+        };
+
+        const keywords = industryKeywords[resumeData.industry] || [];
+
+        const atsSuggestion = `
+          <strong>ATS Keyword Suggestions:</strong><br>
+          Add the following keywords for better ATS optimization: 
+          ${keywords.join(', ')}.
+        `;
+        const atsSuggestionElement = document.createElement('div');
+        atsSuggestionElement.innerHTML = atsSuggestion;
+        suggestionsContainer.appendChild(atsSuggestionElement);
+
+        const languageSuggestions = `
+          <strong>Language Improvement:</strong><br>
+          - Use action verbs like 'Led', 'Developed', 'Implemented'.<br>
+          - Quantify achievements with numbers and percentages when possible.<br>
+        `;
+        const languageSuggestionElement = document.createElement('div');
+        languageSuggestionElement.innerHTML = languageSuggestions;
+        suggestionsContainer.appendChild(languageSuggestionElement);
+      };
+
+      // Function to generate enhanced resume PDF and display it
+      const generateAndDisplayPDF = () => {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        doc.setFont('Arial', 'normal');
+
+        // Add Name and Email
+        doc.text(`Resume - ${resumeData.name}`, 10, 10);
+        doc.text(`Email: ${resumeData.email}`, 10, 20);
+
+        // Add Work Experience Section
+        doc.text('Work Experience:', 10, 30);
+        doc.text(resumeData.experience.split(',').join('\n'), 10, 40);
+
+        // Add Education Section
+        doc.text('Education:', 10, 60);
+        doc.text(resumeData.education.split(',').join('\n'), 10, 70);
+
+        // Add Skills Section
+        doc.text('Skills:', 10, 90);
+        doc.text(resumeData.skills.split(',').join('\n'), 10, 100);
+
+        // Add ATS optimization keywords
+        const industryKeywords = {
+          software: ['JavaScript', 'React', 'Node.js', 'Git', 'API'],
+          marketing: ['SEO', 'Google Analytics', 'Content Marketing', 'PPC', 'Social Media'],
+          healthcare: ['Patient Care', 'EMR', 'HIPAA Compliance', 'Clinical Research', 'Medical Records'],
+          finance: ['Financial Modeling', 'Excel', 'Investment Analysis', 'Portfolio Management', 'Risk Assessment']
+        };
+        doc.text('Suggested ATS Keywords:', 10, 120);
+        doc.text(industryKeywords[resumeData.industry].join(', '), 10, 130);
+
+        // Render PDF as base64 and show it in iframe
+        const pdfDataUrl = doc.output('datauristring');
+        pdfFrame.src = pdfDataUrl;
+
+        // Show the PDF container
+        pdfContainer.style.display = 'block';
+
+        // Enable the download button
+        downloadButton.style.display = 'inline-block';
+
+        // Set download URL for the file
+        downloadButton.setAttribute('href', pdfDataUrl);
+        downloadButton.setAttribute('download', `${resumeData.name}_enhanced_resume.pdf`);
+      };
+
+      // Event listener for the generate button
+      generateButton.addEventListener('click', generateAndDisplayPDF);
+    });
+  </script>
+
+</body>
+</html>
